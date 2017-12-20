@@ -1,5 +1,5 @@
 // Author: Josh Davis
-// Last Modified: 12/19/2017
+// Last Modified: 12/20/2017
 // Purpose: Generates maze data and solves using A*
 
 #include "Maze.h";
@@ -101,14 +101,14 @@ Maze::~Maze()
 			delete nodes[i][j];
 		}
 	}
-	for (int i = 0; i < OPEN.size(); i++) 
+	/*for (int i = 0; i < OPEN.size(); i++) 
 	{
 		delete OPEN[i];
 	}
 	for (int i = 0; i < CLOSED.size(); i++) 
 	{
 		delete CLOSED[i];
-	}
+	}*/
 }
 
 int Maze::MazeX() 
@@ -171,10 +171,10 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 	while (k > 0) {
 
 		//find node with least f
-		Node * q = OPEN[k];
+		//Node * q = OPEN[k];
 
 		//pop q off open list
-		OPEN.pop_back();
+		//OPEN.pop_back();
 
 
 		/* with the original node being (i, j), successors are each direction and diagonal, i.e.
@@ -182,37 +182,54 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 		(i - 1, j + 1), (i - 1, j - 1), (i + 1, j + 1), (i + 1, j - 1)*/
 
 		// for each successor, check and process appropriate lists
-		CheckSuccessor(i - 1, j);
-		CheckSuccessor(i + 1, j);
-		CheckSuccessor(i, j + 1);
-		CheckSuccessor(i, j - 1);
-		CheckSuccessor(i - 1, j + 1);
-		CheckSuccessor(i - 1, j - 1);
-		CheckSuccessor(i + 1, j + 1);
-		CheckSuccessor(i + 1, j - 1);
+		CheckSuccessor(end, i - 1, j);
+		CheckSuccessor(end, i + 1, j);
+		CheckSuccessor(end, i, j + 1);
+		CheckSuccessor(end, i, j - 1);
+		CheckSuccessor(end, i - 1, j + 1);
+		CheckSuccessor(end, i - 1, j - 1);
+		CheckSuccessor(end, i + 1, j + 1);
+		CheckSuccessor(end, i + 1, j - 1);
 
 
 		//push q to closed list
-		CLOSED.push_back(q);
+		//CLOSED.push_back(q);
 
 		i--;
 	}
 }
 
-void Maze::CheckSuccessor(int x, int y) {
+void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
+{
+	float tempg, temph;
 
-	if (isAllowable(x, y)) {
+	if (isAllowable(x, y)) 
+	{
 
 		//if goal, stop
+		if (isDone(e, x, y)) 
+		{
 
-
-		//if node with same position as successor is in OPEN which 
-		//has a lower f than successor, skip
-
-
+			return;
+		}
 		//if node with same position as successor is in CLOSED which
 		//has a lower f than successor, skip
+		else if (CLOSED[x][y] == false) {
+			
+			tempg = nodes[x][y]->getG() + 1.0;
+			temph = nodes[x][y]->hCost(x, y);
 
+			//if node with same position as successor is in OPEN which 
+			//has a lower f than successor, skip
+			float temp = nodes[x][y]->getF();
+			if (temp == FLT_MAX ||  temp > (tempg + temph))
+			{
+				nodes[x][y]->setG(tempg);
+				nodes[x][y]->setH(temph);
+				nodes[x][y]->setF(tempg + temph);
+			}
+
+		}
 
 
 		//otherwise, add node to OPEN

@@ -17,7 +17,7 @@ namespace Simplex
 
 class Application
 {
-	String m_sProgrammer = "Josh Davis - jad2828@rit.edu";
+	String m_sProgrammer = "Josh Davis - jad4005@rit.edu";
 
 	MyCamera* m_pCamera = nullptr;
 	MyMeshManager* m_pMyMeshMngr = nullptr;

@@ -1,5 +1,5 @@
 // Author: Josh Davis
-// Last Modified: 12/19/2017
+// Last Modified: 12/20/2017
 // Purpose: Generates maze data and solves using A*
 
 #pragma once
@@ -8,65 +8,8 @@
 #include <time.h>
 #include <list>
 
-struct Node
-{
-	// node x, node y
-	int nx; int ny;
+#include "Node.h"
 
-	int g; // movement cost from start to a node
-	int h; // estimated cost for a given node to destination
-	int f; // g + h
-
-public:
-
-	Node() {
-
-	};
-
-	Node(int tx, int ty, int d, int p)
-	{
-		//curLoc.x = l.x; curLoc.y = l.y; curLoc.z = l.z;
-		nx = tx; ny= ty;
-		g = d; 
-		h = p;
-	}
-
-	~Node() {
-
-	}
-
-	int getX() { return nx; }
-	int getY() { return ny; }
-
-	int getG() { return g; }
-	int getH() { return h; }
-
-	int getF() { return f; }
-
-	void updateHCost(int & xDest, int & yDest)
-	{
-		f = g + hCost(xDest, yDest);
-	}
-
-	//process movement cost
-	void gCost(int & i) // i: direction
-	{
-		g += (i % 2 == 0 ? 10 : 14);
-	}
-
-	//estimate h cost (cost to end of maze) 
-	int & hCost(int & xDest, int & yDest)
-	{
-		int xd, yd;
-		xd = xDest - nx;
-		yd = yDest - ny;
-
-		//Euclidian distance
-		h = (sqrt(xd*xd + yd*yd));
-
-		return(h);
-	}
-};
 
 class Maze
 {
@@ -81,8 +24,8 @@ private:
 	std::vector < std::vector < bool > > walls;
 
 	//A* open and closed lists
-	std::vector<Node*> OPEN;
-	std::vector<Node*> CLOSED;
+	std::vector< std::vector < bool > > OPEN;
+	std::vector< std::vector < bool > > CLOSED;
 
 public:
 	//constructors/deconstructors
@@ -99,5 +42,5 @@ public:
 	bool isAllowable(int x, int y);
 	bool isDone(std::pair<int, int>, int x, int y);
 	void AStar(std::pair<int,int> a, std::pair<int,int> b);
-	void CheckSuccessor(int x, int y)
+	void CheckSuccessor(std::pair<int, int> e, int x, int y);
 };
