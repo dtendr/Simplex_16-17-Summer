@@ -6,10 +6,12 @@
 
 Node::Node() 
 {
-
+	nx = 0; ny = 0;
+	g = 0.0;
+	h = 0.0;
 };
 
-Node::Node(int tx, int ty, int d, int p)
+Node::Node(int tx, int ty, double d, double p)
 {
 	//curLoc.x = l.x; curLoc.y = l.y; curLoc.z = l.z;
 	nx = tx; ny = ty;

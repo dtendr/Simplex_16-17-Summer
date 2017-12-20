@@ -20,7 +20,7 @@ private:
 public:
 	//constructors/deconstructors
 	Node();
-	Node(int tx, int ty, int d, int p);
+	Node(int tx, int ty, double d, double p);
 	~Node();
 
 	//accessers

@@ -84,6 +84,17 @@ Maze::Maze()
 		}
 	}
 
+	//initialize nodes
+	for (int i = 0; i < default_maze_size_x; i++) 
+	{
+		nodes.push_back(std::vector<Node*>());
+
+		for (int j = 0; j < default_maze_size_y; j++) 
+		{
+			nodes[i].push_back(new Node(i, j, 0.0, 0.0));
+		}
+	}
+
 	/*int grid[9][10] =
 	{
 		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
@@ -107,9 +118,9 @@ Maze::Maze(int w, int h)
 Maze::~Maze()
 {
 	//delete arrays of nodes, open, and closed
-	for (int i = 0; i < nodes.size(); i++) 
+	for (int i = 0; i < default_maze_size_x; i++)
 	{
-		for (int j = 0; j < nodes.size(); j++) 
+		for (int j = 0; j < default_maze_size_y; j++)
 		{
 			delete nodes[i][j];
 		}
