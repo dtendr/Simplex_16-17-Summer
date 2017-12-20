@@ -24,7 +24,10 @@ private:
 	std::vector < std::vector < bool > > walls;
 
 	//A* open and closed lists
-	std::vector< std::vector < bool > > OPEN;
+	//OPEN contains Nodes to reference x,y and f
+	//for CLOSED, really doesn't matter
+	//std::vector< std::vector < Node* > > OPEN;
+	Node* OPEN;
 	std::vector< std::vector < bool > > CLOSED;
 
 public:

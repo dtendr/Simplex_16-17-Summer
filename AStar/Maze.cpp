@@ -83,6 +83,19 @@ Maze::Maze()
 			}
 		}
 	}
+
+	/*int grid[9][10] =
+	{
+		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+		{ 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 },
+		{ 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
+		{ 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
+		{ 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 },
+		{ 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
+		{ 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
+		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+		{ 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 }
+	};*/
 }
 
 
@@ -153,29 +166,37 @@ bool Maze::isDone(std::pair<int, int> end, int x, int y)
 //run through A* algorithm
 void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 {
-
-	if (!isAllowable(start.first, start.second) && !isAllowable(end.first, end.second)) 
+	//check conditions that would either break the algorithm
+	//or end it instantly ;)
+	if ((!isAllowable(start.first, start.second) && !isAllowable(end.first, end.second)) || isDone(end, start.first, start.second))
 	{
 		return;
 	}
-
-	//if(isDone())
 
 	//start with initial values for i and j
 	int i = start.first;
 	int j = start.second;
 
-	int k = OPEN.size();
+	//initialize OPEN with the starting node
+	//OPEN.push_back(nodes[i][j]);
+	OPEN = nodes[i][j];
+
+	int k = nodes.size();
 
 	//while list not empty
 	while (k > 0) {
 
 		//find node with least f
-		//Node * q = OPEN[k];
+		Node * q = OPEN;
 
 		//pop q off open list
 		//OPEN.pop_back();
+		OPEN = nullptr;
 
+		i = q->getX();
+		j = q->getY();
+
+		CLOSED[i][j] = true;
 
 		/* with the original node being (i, j), successors are each direction and diagonal, i.e.
 		(i - 1, j), (i + 1, j), (i, j + 1), (i, j - 1), 
@@ -209,7 +230,6 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 		//if goal, stop
 		if (isDone(e, x, y)) 
 		{
-
 			return;
 		}
 		//if node with same position as successor is in CLOSED which
@@ -224,6 +244,8 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 			float temp = nodes[x][y]->getF();
 			if (temp == FLT_MAX ||  temp > (tempg + temph))
 			{
+				OPEN = nodes[x][y];
+
 				nodes[x][y]->setG(tempg);
 				nodes[x][y]->setH(temph);
 				nodes[x][y]->setF(tempg + temph);
