@@ -198,7 +198,7 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 	//OPEN.push_back(nodes[i][j]);
 	OPEN = nodes[i][j];
 
-	CLOSED = 
+	CLOSED[default_maze_size_x][default_maze_size_y];
 
 	int k = nodes.size();
 
