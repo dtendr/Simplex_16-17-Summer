@@ -16,6 +16,10 @@ class Maze
 	int default_maze_size_x = 80;
 	int default_maze_size_y = 25;
 
+	//entrance marked, exit marked respectively
+	bool enM;
+	bool exM;
+
 private:
 	//nodes that exist
 	std::vector < std::vector < Node* > > nodes;
@@ -40,6 +44,12 @@ public:
 	int MazeX();
 	int MazeY();
 	std::vector < std::vector < bool > > MazeMap();
+
+	bool ENM();
+	void ENM(bool en);
+
+	bool EXM();
+	void EXM(bool ex);
 
 	//A* methods
 	bool isAllowable(int x, int y);

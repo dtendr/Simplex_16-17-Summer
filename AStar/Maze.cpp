@@ -138,6 +138,12 @@ std::vector < std::vector < bool > > Maze::MazeMap()
 	return this->walls;
 }
 
+bool Maze::ENM() { return enM; }
+void Maze::ENM(bool value) { enM = value; }
+
+bool Maze::EXM() { return exM; }
+void Maze::EXM(bool value) { exM = value; }
+
 //check if parameters are within maze size
 bool Maze::isAllowable(int x, int y)
 {
@@ -252,10 +258,6 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 			}
 
 		}
-
-
-		//otherwise, add node to OPEN
-		//OPEN.push_back(successors[j]);
 
 	}
 }

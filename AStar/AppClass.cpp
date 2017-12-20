@@ -24,8 +24,6 @@ void Application::InitVariables(void)
 	m_pMyMeshMngr->SetCamera(m_pCamera);
 
 	m_mGen = new Maze();
-	
-	
 }
 void Application::Update(void)
 {
@@ -39,6 +37,7 @@ void Application::Update(void)
 	CameraRotation();
 
 	//Add objects to the Manager
+	std::pair<int, int> start, end;
 	uint nCount = 0;
 	for (size_t y = 0; y < m_mGen->MazeY(); y++)
 	{
@@ -51,8 +50,24 @@ void Application::Update(void)
 				m_pMyMeshMngr->AddCubeToRenderList(glm::translate(vector3(x, y, 0.0f)));
 				nCount++;
 			}
+			else 
+			{
+				if (y == 0 && !m_mGen->ENM()) 
+				{
+					start = { x, y };
+					m_mGen->ENM(true);
+				}
+				if ((y + 1 == m_mGen->MazeY()) && !m_mGen->EXM()) 
+				{
+					end = { x, y };
+					m_mGen->EXM(true);
+				}
+
+			}
 		}
 	}
+
+	m_mGen->AStar(start, end);
 
 	m_pMeshMngr->Print("Objects: " + std::to_string(nCount) + "\n", C_BLUE);
 
