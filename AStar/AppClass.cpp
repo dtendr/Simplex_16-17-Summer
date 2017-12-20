@@ -42,12 +42,12 @@ void Application::Update(void)
 
 	//Add objects to the Manager
 	uint nCount = 0;
-	for (int y = 0; y < m_mGen->MazeY(); y++)
+	for (int x = 0; x < m_mGen->MazeX(); x++)
 	{
 
-		for (int x = 0; x < m_mGen->MazeX(); x++)
+		for (int y = 0; y < m_mGen->MazeY(); y++)
 		{
-			if (m_mGen->MazeMap()[y][x] == false) 
+			if (m_mGen->MazeMap()[x][y] == false) 
 			{
 				m_pMyMeshMngr->AddCubeToRenderList(glm::translate(vector3(x, y, 0.0f)));
 				nCount++;
@@ -70,7 +70,7 @@ void Application::Update(void)
 					//no longer needed since path tracks beginning/ending as well
 					else {
 
-						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(start.first, start.second, 0.0f)));
+						//m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(start.first, start.second, 0.0f)));
 					}
 				}
 				if (y + 1 == m_mGen->MazeY()) 
@@ -87,7 +87,7 @@ void Application::Update(void)
 					//no longer needed since path tracks beginning/ending as well
 					else {
 
-						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(end.first, end.second, 0.0f)));
+						//m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(end.first, end.second, 0.0f)));
 					}
 				}
 
@@ -100,12 +100,12 @@ void Application::Update(void)
 	//probably not efficient, but testing
 	m_mGen->AStar(start, end);
 
-	for (int y = 0; y < m_mGen->MazeY(); y++)
+	for (int x = 0; x < m_mGen->MazeX(); x++)
 	{
 
-		for (int x = 0; x < m_mGen->MazeX(); x++)
+		for (int y = 0; y < m_mGen->MazeY(); y++)
 		{
-			if (m_mGen->Path()[y][x] == true) 
+			if (m_mGen->Path()[x][y] == true) 
 			{
 				m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(x, y, 0.0f)));
 			}

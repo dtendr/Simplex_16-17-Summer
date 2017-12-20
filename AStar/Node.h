@@ -38,8 +38,6 @@ public:
 
 	void updateHCost(int xDest, int yDest);
 
-	void gCost(int i);
-
 	double hCost(int xDest, int yDest);
 
 };

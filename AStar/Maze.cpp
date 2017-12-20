@@ -27,9 +27,9 @@ Maze::Maze()
 	for (size_t x = 0; x < default_maze_size_x; x++) {
 		for (size_t y = 0; y < default_maze_size_y; y++) {
 			//obviously will cause issues if maze has a longer side, leaving for now
-			CLOSED[y][x] = false;
-			walls[y][x] = false;
-			path[y][x] = false;
+			CLOSED[x][y] = false;
+			walls[x][y] = false;
+			path[x][y] = false;
 		}
 	}
 
@@ -123,14 +123,8 @@ Maze::~Maze()
 			delete nodes[i][j];
 		}
 	}
-	/*for (int i = 0; i < OPEN.size(); i++) 
-	{
-		delete OPEN[i];
-	}
-	for (int i = 0; i < CLOSED.size(); i++) 
-	{
-		delete CLOSED[i];
-	}*/
+
+	delete OPEN;
 }
 
 int Maze::MazeX() 
@@ -166,10 +160,10 @@ bool Maze::isAllowable(int x, int y)
 	if ((x >= 0) && (x < default_maze_size_x) && (y >= 0) && (y < default_maze_size_y))
 	{
 		//if wall is in the way
-		if (walls[x][y] == true)
+		/*if (walls[x][y] == true)
 		{
 			return false;
-		}
+		}*/
 
 		return true;
 	};
@@ -208,21 +202,16 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 
 	path[i][j] = true;
 
-	int k = nodes.size();
-
-	//while list not empty
-	while (k > 0) {
+	//while OPEN is defined
+	while (OPEN != nullptr) {
 
 		//find node with least f
 		Node * q = OPEN;
 
-		//pop q off open list
-		//OPEN.pop_back();
-		//OPEN = nullptr;
-
 		i = q->getX();
 		j = q->getY();
 
+		//mark off current node as visited
 		CLOSED[i][j] = true;
 
 		/* with the original node being (i, j), successors are each direction and diagonal, i.e.
@@ -241,12 +230,6 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 		CheckSuccessor(end, i - 1, j - 1);
 		CheckSuccessor(end, i + 1, j + 1);
 		CheckSuccessor(end, i + 1, j - 1);*/
-
-
-		//push q to closed list
-		//CLOSED.push_back(q);
-
-		i--;
 	}
 }
 
@@ -261,6 +244,9 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 		if (isDone(e, x, y)) 
 		{
 			path[x][y] = true;
+
+			delete OPEN;
+
 			return;
 		}
 		//if node with same position as successor is in CLOSED which
@@ -275,6 +261,7 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 			float temp = nodes[x][y]->getF();
 			if (temp == FLT_MAX ||  temp > (tempg + temph))
 			{
+				//if not ended, update open so the loop continues
 				OPEN = nodes[x][y];
 
 				path[x][y] = true;

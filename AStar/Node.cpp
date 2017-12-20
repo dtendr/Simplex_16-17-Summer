@@ -41,12 +41,6 @@ void Node::updateHCost(int xDest, int yDest)
 	f = g + hCost(xDest, yDest);
 }
 
-//process movement cost
-void Node::gCost(int i) // i: direction
-{
-	g += (i % 2 == 0 ? 10 : 14);
-}
-
 //estimate h cost (cost to end of maze) 
 double Node::hCost(int xDest, int yDest)
 {
