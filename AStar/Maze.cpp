@@ -198,6 +198,8 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 	//OPEN.push_back(nodes[i][j]);
 	OPEN = nodes[i][j];
 
+	CLOSED = 
+
 	int k = nodes.size();
 
 	//while list not empty
@@ -208,7 +210,7 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 
 		//pop q off open list
 		//OPEN.pop_back();
-		OPEN = nullptr;
+		//OPEN = nullptr;
 
 		i = q->getX();
 		j = q->getY();

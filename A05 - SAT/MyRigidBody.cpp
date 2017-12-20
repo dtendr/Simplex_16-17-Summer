@@ -287,6 +287,36 @@ uint MyRigidBody::SAT(MyRigidBody* const a_pOther)
 	(eSATResults::SAT_NONE has a value of 0)
 	*/
 
+	// Compute a tentative separating axis for ab and cd 
+	vector3 m = glm::cross(ab, cd); //ab, cd
+
+	(glm::distance(GetCenterGlobal(), a_pOther->GetCenterGlobal()) < m_fRadius + a_pOther->m_fRadius);
+
+	if (glm::equal(m, vector3(0.0, 0.0, 0.0))) {
+
+		
+		// Edges ab and cd not parallel, continue with m as a potential separating axis ... 
+
+
+
+	} else { 
+		// Edges ab and cd must be (near) parallel, and therefore lie in some plane P. 
+		// Thus, as a separating axis try an axis perpendicular to ab and lying in P 
+		vector3 n = glm::cross(ab, c - a); //ab, c-a
+		m = glm::cross(ab, n);
+		if (!IsZeroVector(m)) {
+			// Continue with m as a potential separating axis ... 
+
+
+
+		} 
+		// ab and ac are parallel too, so edges must be on a line. Ignore testing 
+		// the axis for this combination of edges as it won’t be a separating axis. 
+		// (Alternatively, test if edges overlap on this line, in which case the 
+		// objects are overlapping.) 
+	}
+
+
 	//there is no axis test that separates this two objects
 	return eSATResults::SAT_NONE;
 }
