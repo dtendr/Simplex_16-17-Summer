@@ -23,7 +23,11 @@ void Application::InitVariables(void)
 	m_pMyMeshMngr = MyMeshManager::GetInstance();
 	m_pMyMeshMngr->SetCamera(m_pCamera);
 
+	//generate new maze
 	m_mGen = new Maze();
+
+	//run A* after maze generation
+	//m_mGen->AStar(start, end);
 }
 void Application::Update(void)
 {
@@ -45,7 +49,6 @@ void Application::Update(void)
 		{
 			if (m_mGen->MazeMap()[y][x] == false) 
 			{
-
 				m_pMyMeshMngr->AddCubeToRenderList(glm::translate(vector3(x, y, 0.0f)));
 				nCount++;
 			}
@@ -64,6 +67,7 @@ void Application::Update(void)
 
 						m_mGen->ENM(true);
 					}
+					//no longer needed since path tracks beginning/ending as well
 					else {
 
 						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(start.first, start.second, 0.0f)));
@@ -71,7 +75,8 @@ void Application::Update(void)
 				}
 				if (y + 1 == m_mGen->MazeY()) 
 				{
-					if (!m_mGen->EXM()) {
+					if (!m_mGen->EXM())
+					{
 						end = { x, y };
 
 						//render a sphere as marker for end point
@@ -79,6 +84,7 @@ void Application::Update(void)
 
 						m_mGen->EXM(true);
 					}
+					//no longer needed since path tracks beginning/ending as well
 					else {
 
 						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(end.first, end.second, 0.0f)));
@@ -86,10 +92,25 @@ void Application::Update(void)
 				}
 
 			}
+
+
 		}
 	}
 
+	//probably not efficient, but testing
 	m_mGen->AStar(start, end);
+
+	for (int y = 0; y < m_mGen->MazeY(); y++)
+	{
+
+		for (int x = 0; x < m_mGen->MazeX(); x++)
+		{
+			if (m_mGen->Path()[y][x] == true) 
+			{
+				m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(x, y, 0.0f)));
+			}
+		}
+	}
 
 	m_pMeshMngr->Print("Objects: " + std::to_string(nCount) + "\n", C_BLUE);
 

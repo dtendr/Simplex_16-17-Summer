@@ -34,6 +34,9 @@ private:
 	Node* OPEN;
 	std::vector< std::vector < bool > > CLOSED;
 
+	//the resultant solution path from A*
+	std::vector < std::vector < bool > > path;
+
 public:
 	//constructors/deconstructors
 	Maze();
@@ -44,6 +47,7 @@ public:
 	int MazeX();
 	int MazeY();
 	std::vector < std::vector < bool > > MazeMap();
+	std::vector < std::vector < bool > > Path();
 
 	bool ENM();
 	void ENM(bool en);

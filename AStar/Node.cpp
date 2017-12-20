@@ -50,12 +50,9 @@ void Node::gCost(int i) // i: direction
 //estimate h cost (cost to end of maze) 
 double Node::hCost(int xDest, int yDest)
 {
-	int xd, yd;
-	xd = xDest - nx;
-	yd = yDest - ny;
-
-	//Euclidian distance
-	h = (sqrt(xd*xd + yd*yd));
+	//switched to Manhattan because it makes more sense for a maze
+	//Manhattan distance
+	h = abs(nx - xDest) + abs(ny - yDest);
 
 	return(h);
 }

@@ -14,13 +14,24 @@ Maze::Maze()
 
 	std::list < std::pair < int, int> > drillers;
 
+	//initializing other same size arrays while we're at it
+	CLOSED.resize(default_maze_size_y);
 	walls.resize(default_maze_size_y);
-	for (size_t y = 0; y < default_maze_size_y; y++)
+	path.resize(default_maze_size_y);
+	for (size_t y = 0; y < default_maze_size_y; y++){
+		CLOSED[y].resize(default_maze_size_x);
 		walls[y].resize(default_maze_size_x);
+		path[y].resize(default_maze_size_x);
+	}
 
-	for (size_t x = 0; x < default_maze_size_x; x++)
-		for (size_t y = 0; y < default_maze_size_y; y++)
+	for (size_t x = 0; x < default_maze_size_x; x++) {
+		for (size_t y = 0; y < default_maze_size_y; y++) {
+			//obviously will cause issues if maze has a longer side, leaving for now
+			CLOSED[y][x] = false;
 			walls[y][x] = false;
+			path[y][x] = false;
+		}
+	}
 
 	drillers.push_back(std::make_pair(default_maze_size_x / 2, default_maze_size_y / 2));
 	while (drillers.size() > 0)
@@ -136,6 +147,12 @@ std::vector < std::vector < bool > > Maze::MazeMap()
 	return this->walls;
 }
 
+std::vector < std::vector < bool > > Maze::Path()
+{
+	return this->path;
+}
+
+
 bool Maze::ENM() { return enM; }
 void Maze::ENM(bool value) { enM = value; }
 
@@ -145,21 +162,25 @@ void Maze::EXM(bool value) { exM = value; }
 //check if parameters are within maze size
 bool Maze::isAllowable(int x, int y)
 {
+	//if is valid position
 	if ((x >= 0) && (x < default_maze_size_x) && (y >= 0) && (y < default_maze_size_y))
 	{
-		if (walls[x][y] == true) 
+		//if wall is in the way
+		if (walls[x][y] == true)
 		{
 			return false;
 		}
-	};
 
-	return true;
+		return true;
+	};
+	return false;
+	
 }
 
 //check for end of A*
 bool Maze::isDone(std::pair<int, int> end, int x, int y)
 {
-	
+	//if end x and y match current x and y, A* is done
 	if (x == end.first && y == end.second) 
 	{
 		return true;
@@ -185,15 +206,7 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 	//OPEN.push_back(nodes[i][j]);
 	OPEN = nodes[i][j];
 
-	for (int i = 0; i < default_maze_size_x; i++)
-	{
-		CLOSED.push_back(std::vector<bool>());
-
-		for (int j = 0; j < default_maze_size_y; j++)
-		{
-			CLOSED[i].push_back(false);
-		}
-	}
+	path[i][j] = true;
 
 	int k = nodes.size();
 
@@ -221,10 +234,13 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 		CheckSuccessor(end, i + 1, j);
 		CheckSuccessor(end, i, j + 1);
 		CheckSuccessor(end, i, j - 1);
-		CheckSuccessor(end, i - 1, j + 1);
+
+		//these are only necessary for Euclidian approximation
+		//switched to manhattan since we cant really move diagonally in this maze
+		/*CheckSuccessor(end, i - 1, j + 1);
 		CheckSuccessor(end, i - 1, j - 1);
 		CheckSuccessor(end, i + 1, j + 1);
-		CheckSuccessor(end, i + 1, j - 1);
+		CheckSuccessor(end, i + 1, j - 1);*/
 
 
 		//push q to closed list
@@ -244,6 +260,7 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 		//if goal, stop
 		if (isDone(e, x, y)) 
 		{
+			path[x][y] = true;
 			return;
 		}
 		//if node with same position as successor is in CLOSED which
@@ -259,6 +276,8 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 			if (temp == FLT_MAX ||  temp > (tempg + temph))
 			{
 				OPEN = nodes[x][y];
+
+				path[x][y] = true;
 
 				nodes[x][y]->setG(tempg);
 				nodes[x][y]->setH(temph);
