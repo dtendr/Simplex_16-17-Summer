@@ -15,8 +15,8 @@ void Application::InitVariables(void)
 	//init the camera
 	m_pCamera = new MyCamera();
 	m_pCamera->SetPositionTargetAndUp(
-		vector3(0.0f, 3.0f, 20.0f), //Where my eyes are
-		vector3(0.0f, 3.0f, 19.0f), //where what I'm looking at is
+		vector3(15.0f, 15.0f, 60.0f), //Where my eyes are
+		vector3(15.0f, 15.0f, 19.0f), //where what I'm looking at is
 		AXIS_Y);					//what is up
 
 	//Get the singleton
@@ -37,12 +37,11 @@ void Application::Update(void)
 	CameraRotation();
 
 	//Add objects to the Manager
-	std::pair<int, int> start, end;
 	uint nCount = 0;
-	for (size_t y = 0; y < m_mGen->MazeY(); y++)
+	for (int y = 0; y < m_mGen->MazeY(); y++)
 	{
 
-		for (size_t x = 0; x < m_mGen->MazeX(); x++)
+		for (int x = 0; x < m_mGen->MazeX(); x++)
 		{
 			if (m_mGen->MazeMap()[y][x] == false) 
 			{
@@ -52,15 +51,38 @@ void Application::Update(void)
 			}
 			else 
 			{
-				if (y == 0 && !m_mGen->ENM()) 
+				//grab two points based on max Y
+				//basically grabbing a pseudo-random start and end point
+				if (y == 0)
 				{
-					start = { x, y };
-					m_mGen->ENM(true);
+					if (!m_mGen->ENM()) 
+					{
+						start = { x, y };
+
+						//render a sphere as marker for start point
+						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(x, y, 0.0f)));
+
+						m_mGen->ENM(true);
+					}
+					else {
+
+						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(start.first, start.second, 0.0f)));
+					}
 				}
-				if ((y + 1 == m_mGen->MazeY()) && !m_mGen->EXM()) 
+				if (y + 1 == m_mGen->MazeY()) 
 				{
-					end = { x, y };
-					m_mGen->EXM(true);
+					if (!m_mGen->EXM()) {
+						end = { x, y };
+
+						//render a sphere as marker for end point
+						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(x, y, 0.0f)));
+
+						m_mGen->EXM(true);
+					}
+					else {
+
+						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(end.first, end.second, 0.0f)));
+					}
 				}
 
 			}

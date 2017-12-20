@@ -23,6 +23,8 @@ class Application
 	MyMeshManager* m_pMyMeshMngr = nullptr;
 
 	Maze* m_mGen = nullptr; //maze generator for A*
+
+	std::pair<int, int> start, end;
 	
 private:
 	static ImGuiObject gui; //GUI object

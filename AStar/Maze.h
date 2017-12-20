@@ -13,7 +13,7 @@
 
 class Maze
 {
-	int default_maze_size_x = 80;
+	int default_maze_size_x = 25;
 	int default_maze_size_y = 25;
 
 	//entrance marked, exit marked respectively

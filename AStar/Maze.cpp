@@ -94,19 +94,6 @@ Maze::Maze()
 			nodes[i].push_back(new Node(i, j, 0.0, 0.0));
 		}
 	}
-
-	/*int grid[9][10] =
-	{
-		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-		{ 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 },
-		{ 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
-		{ 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
-		{ 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 },
-		{ 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
-		{ 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
-		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
-		{ 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 }
-	};*/
 }
 
 
@@ -137,11 +124,11 @@ Maze::~Maze()
 
 int Maze::MazeX() 
 {
-	return this->default_maze_size_x;
+	return default_maze_size_x;
 }
 int Maze::MazeY()
 {
-	return this->default_maze_size_y;
+	return default_maze_size_y;
 }
 
 std::vector < std::vector < bool > > Maze::MazeMap()
@@ -198,7 +185,15 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 	//OPEN.push_back(nodes[i][j]);
 	OPEN = nodes[i][j];
 
-	CLOSED[default_maze_size_x][default_maze_size_y];
+	for (int i = 0; i < default_maze_size_x; i++)
+	{
+		CLOSED.push_back(std::vector<bool>());
+
+		for (int j = 0; j < default_maze_size_y; j++)
+		{
+			CLOSED[i].push_back(false);
+		}
+	}
 
 	int k = nodes.size();
 
