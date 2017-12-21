@@ -11,33 +11,33 @@ class Node
 	// node x, node y
 	int nx; int ny;
 
-	double g; // movement cost from start to a node
-	double h; // estimated cost for a given node to destination
-	double f; // g + h
+	float g; // movement cost from start to a node
+	float h; // estimated cost for a given node to destination
+	float f; // g + h
 
 private:
 
 public:
 	//constructors/deconstructors
 	Node();
-	Node(int tx, int ty, double d, double p);
+	Node(int tx, int ty, float d, float p);
 	~Node();
 
 	//accessers
 	int getX();
 	int getY();
 
-	double getG();
-	void setG(double newg);
+	float getG();
+	void setG(float newg);
 
-	double getH();
-	void setH(double newh);
+	float getH();
+	void setH(float newh);
 
-	double getF();
-	void setF(double newf);
+	float getF();
+	void setF(float newf);
 
 	void updateHCost(int xDest, int yDest);
 
-	double hCost(int xDest, int yDest);
+	float hCost(int xDest, int yDest);
 
 };

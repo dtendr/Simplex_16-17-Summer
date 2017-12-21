@@ -124,7 +124,7 @@ Maze::~Maze()
 		}
 	}
 
-	delete OPEN;
+	//delete OPEN;
 }
 
 int Maze::MazeX() 
@@ -160,10 +160,10 @@ bool Maze::isAllowable(int x, int y)
 	if ((x >= 0) && (x < default_maze_size_x) && (y >= 0) && (y < default_maze_size_y))
 	{
 		//if wall is in the way
-		/*if (walls[x][y] == true)
+		if (walls[x][y] == true)
 		{
 			return false;
-		}*/
+		}
 
 		return true;
 	};
@@ -197,16 +197,17 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 	int j = start.second;
 
 	//initialize OPEN with the starting node
-	//OPEN.push_back(nodes[i][j]);
-	OPEN = nodes[i][j];
+	OPEN.push_back(nodes[i][j]);
 
 	path[i][j] = true;
 
-	//while OPEN is defined
-	while (OPEN != nullptr) {
+	//while OPEN has members
+	while (OPEN.size() > 0) {
 
 		//find node with least f
-		Node * q = OPEN;
+		Node * q = OPEN[OPEN.size() - 1];
+
+		OPEN.pop_back();
 
 		i = q->getX();
 		j = q->getY();
@@ -223,6 +224,7 @@ void Maze::AStar(std::pair<int, int> start, std::pair<int, int> end)
 		CheckSuccessor(end, i + 1, j);
 		CheckSuccessor(end, i, j + 1);
 		CheckSuccessor(end, i, j - 1);
+		//break;
 
 		//these are only necessary for Euclidian approximation
 		//switched to manhattan since we cant really move diagonally in this maze
@@ -245,7 +247,7 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 		{
 			path[x][y] = true;
 
-			delete OPEN;
+			OPEN.pop_back();
 
 			return;
 		}
@@ -253,21 +255,22 @@ void Maze::CheckSuccessor(std::pair<int, int> e, int x, int y)
 		//has a lower f than successor, skip
 		else if (CLOSED[x][y] == false) {
 			
-			tempg = nodes[x][y]->getG() + 1.0;
-			temph = nodes[x][y]->hCost(x, y);
+			tempg = nodes[x][y]->getG() + 1.0f;
+			temph = nodes[x][y]->hCost(e.first, e.second);
 
 			//if node with same position as successor is in OPEN which 
 			//has a lower f than successor, skip
 			float temp = nodes[x][y]->getF();
-			if (temp == FLT_MAX ||  temp > (tempg + temph))
+			if (temp == FLT_MAX || temp > (tempg + temph))
 			{
 				//if not ended, update open so the loop continues
-				OPEN = nodes[x][y];
+				OPEN.push_back(nodes[x][y]);
 
 				path[x][y] = true;
 
 				nodes[x][y]->setG(tempg);
 				nodes[x][y]->setH(temph);
+
 				nodes[x][y]->setF(tempg + temph);
 			}
 

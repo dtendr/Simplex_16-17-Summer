@@ -30,8 +30,7 @@ private:
 	//A* open and closed lists
 	//OPEN contains Nodes to reference x,y and f
 	//for CLOSED, really doesn't matter
-	//std::vector< std::vector < Node* > > OPEN;
-	Node* OPEN;
+	std::vector< Node* > OPEN;
 	std::vector< std::vector < bool > > CLOSED;
 
 	//the resultant solution path from A*

@@ -70,7 +70,7 @@ void Application::Update(void)
 					//no longer needed since path tracks beginning/ending as well
 					else {
 
-						//m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(start.first, start.second, 0.0f)));
+						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(start.first, start.second, 0.0f)));
 					}
 				}
 				if (y + 1 == m_mGen->MazeY()) 
@@ -87,7 +87,7 @@ void Application::Update(void)
 					//no longer needed since path tracks beginning/ending as well
 					else {
 
-						//m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(end.first, end.second, 0.0f)));
+						m_pMyMeshMngr->AddSphereToRenderList(glm::translate(vector3(end.first, end.second, 0.0f)));
 					}
 				}
 

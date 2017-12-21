@@ -7,16 +7,18 @@
 Node::Node() 
 {
 	nx = 0; ny = 0;
-	g = 0.0;
-	h = 0.0;
+	g = 0.0f;
+	h = 0.0f;
+	f = FLT_MAX;
 };
 
-Node::Node(int tx, int ty, double d, double p)
+Node::Node(int tx, int ty, float d, float p)
 {
 	//curLoc.x = l.x; curLoc.y = l.y; curLoc.z = l.z;
 	nx = tx; ny = ty;
 	g = d;
 	h = p;
+	f = FLT_MAX;
 }
 
 Node::~Node()
@@ -27,24 +29,19 @@ Node::~Node()
 int Node::getX() { return nx; }
 int Node::getY() { return ny; }
 
-double Node::getG() { return g; }
-void Node::setG(double value) { g = value; }
+float Node::getG() { return g; }
+void Node::setG(float value) { g = value; }
 
-double Node::getH() { return h; }
-void Node::setH(double value) { h = value; }
+float Node::getH() { return h; }
+void Node::setH(float value) { h = value; }
 
-double Node::getF() { return f; }
-void Node::setF(double value) { f = value; }
-
-void Node::updateHCost(int xDest, int yDest)
-{
-	f = g + hCost(xDest, yDest);
-}
+float Node::getF() { return f; }
+void Node::setF(float value) { f = value; }
 
 //estimate h cost (cost to end of maze) 
-double Node::hCost(int xDest, int yDest)
+float Node::hCost(int xDest, int yDest)
 {
-	//switched to Manhattan because it makes more sense for a maze
+	//switched to Manhattan because it makes more sense for a maze like this
 	//Manhattan distance
 	h = abs(nx - xDest) + abs(ny - yDest);
 
